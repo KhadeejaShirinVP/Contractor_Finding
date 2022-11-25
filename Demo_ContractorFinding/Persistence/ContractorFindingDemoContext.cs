@@ -20,15 +20,19 @@ public partial class ContractorFindingDemoContext : DbContext
 
     public virtual DbSet<ServiceProviding> ServiceProvidings { get; set; }
 
+    public virtual DbSet<TbBuilding> TbBuildings { get; set; }
+
+    public virtual DbSet<TbCustomer> TbCustomers { get; set; }
+
     public virtual DbSet<TbGender> TbGenders { get; set; }
 
     public virtual DbSet<TbUser> TbUsers { get; set; }
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=Contractor_FindingDemo;Trusted_Connection=True;TrustServerCertificate=True;");
+//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//        => optionsBuilder.UseSqlServer("Server=.;Database=Contractor_FindingDemo;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -72,6 +76,39 @@ public partial class ContractorFindingDemoContext : DbContext
             entity.Property(e => e.ServiceName)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TbBuilding>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Tb_Build__3214EC27728C9835");
+
+            entity.ToTable("Tb_Building");
+
+            entity.HasIndex(e => e.Building, "UQ__Tb_Build__553663718C6FAA28").IsUnique();
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
+            entity.Property(e => e.Building)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<TbCustomer>(entity =>
+        {
+            entity.HasKey(e => e.RegistrationNo).HasName("PK__Tb_Custo__6EF5E043F70E9256");
+
+            entity.ToTable("Tb_Customer");
+
+            entity.Property(e => e.RegistrationNo)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.BuildingType).HasColumnName("Building_Type");
+            entity.Property(e => e.LandSqft).HasColumnName("Land_sqft");
+
+            entity.HasOne(d => d.BuildingTypeNavigation).WithMany(p => p.TbCustomers)
+                .HasForeignKey(d => d.BuildingType)
+                .HasConstraintName("FK__Tb_Custom__Build__36B12243");
         });
 
         modelBuilder.Entity<TbGender>(entity =>

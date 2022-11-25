@@ -62,7 +62,7 @@ namespace Service
                 var contractorobj = context.ContractorDetails.Where(c => c.ContractorId == contractorDetail.ContractorId).FirstOrDefault();
                 if (contractorobj != null)
                 {
-                    //context.ContractorDetails.Remove(contractorDetail);
+
                     contractorobj.CompanyName = contractorDetail.CompanyName;
                     contractorobj.Gender = contractorDetail?.Gender;
                     contractorobj.Services = contractorDetail?.Services;

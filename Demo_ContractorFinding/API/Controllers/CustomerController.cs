@@ -2,32 +2,31 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
+using Service;
 using Service.Interfaces;
 
 namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ContractorController : ControllerBase
+    public class CustomerController : ControllerBase
     {
         private readonly ContractorFindingDemoContext contractorFindingDemoContext;
-        private readonly IContractorService contractorService;
+        private readonly ICustomerService customerService;
 
-        //Constructor
-        public ContractorController(ContractorFindingDemoContext contractorFindingDemoContext, IContractorService contractorService)
+        public CustomerController(ContractorFindingDemoContext contractorFindingDemoContext, ICustomerService customerService)
         {
             this.contractorFindingDemoContext = contractorFindingDemoContext;
-            this.contractorService = contractorService;
+            this.customerService = customerService;
         }
-
         //create
         [HttpPut]
-        public JsonResult CreateContractor(ContractorDetail contractorDetail)
+        public JsonResult CreateContractor(TbCustomer tbCustomer)
         {
             try
             {
-                var contractor = contractorService.CreateContractor(contractorDetail);
-                if (contractor == true)
+                var customer = customerService.CreateCustomer(tbCustomer);
+                if (customer == true)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Added Successful!" });
                 }
@@ -39,13 +38,14 @@ namespace API.Controllers
             }
         }
 
-        //RETRIVE
+
+        //RETRIEVE
         [HttpGet]
-        public JsonResult GetContractorDetails()
+        public JsonResult GetCustomerDetails()
         {
             try
             {
-                return new JsonResult(contractorService.GetContractorDetails().ToList());
+                return new JsonResult(customerService.GetCustomerDetails().ToList());
             }
             catch (Exception ex)
             {
@@ -55,12 +55,11 @@ namespace API.Controllers
 
         //UPDATE
         [HttpPost]
-
-        public JsonResult UpdateContractor(ContractorDetail contractorDetail)
+        public JsonResult UpdateCustomerDetails(TbCustomer tbCustomer)
         {
             try
             {
-                var contractor = contractorService.updateContractorDetails(contractorDetail);
+                var contractor = customerService.UpdateCustomerDetails(tbCustomer);
                 if (contractor == true)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
@@ -76,22 +75,21 @@ namespace API.Controllers
 
         //DELETE
         [HttpDelete]
-        public JsonResult DeleteContractor(ContractorDetail contractorDetail)
+        public JsonResult DeleteCustomer (TbCustomer tbCustomer)
         {
             try
             {
-                var contractor = contractorService.DeleteContractor(contractorDetail);
-                if (contractor == true)
+                var customer=customerService.DeleteCustomer(tbCustomer);
+                if(customer==true)
                 {
-                    return new JsonResult(new CrudStatus() { Status = true, Message = "Deleted successful!" });
+                    return new JsonResult(new CrudStatus() { Status = true, Message = "Deleted successfully!" });
                 }
                 return new JsonResult(new CrudStatus() { Status = false });
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
-
         }
     }
 }
