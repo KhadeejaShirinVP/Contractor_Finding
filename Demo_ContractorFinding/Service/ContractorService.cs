@@ -1,5 +1,7 @@
 ﻿using Domain;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Persistence;
 using Service.Interfaces;
 using System;
@@ -21,11 +23,20 @@ namespace Service
         }
 
         //create
-        public bool CreateContractor(ContractorDetail contractorDetail)
+        public string CreateContractor(ContractorDetail contractorDetail)
         {
-            contractorFindingDemoContext.ContractorDetails.Add(contractorDetail);
-            contractorFindingDemoContext.SaveChanges();
-            return true;
+            var id = contractorFindingDemoContext.TbUsers.Where(u => u.UserId == contractorDetail.ContractorId).FirstOrDefault();
+            var checklicense = contractorFindingDemoContext.ContractorDetails.Where(u=>u.License == contractorDetail.License).FirstOrDefault();
+            if (id != null && checklicense!=null)
+            {
+                contractorFindingDemoContext.ContractorDetails.Add(contractorDetail);
+                contractorFindingDemoContext.SaveChanges();
+                return "Successful!";
+            }
+            else
+            {
+                return "failed";
+            }
         }
 
         //RETRIEVE
@@ -34,9 +45,9 @@ namespace Service
             List<ContractorDisplay> contractors = (from c in contractorFindingDemoContext.ContractorDetails
                                                    join g in contractorFindingDemoContext.TbGenders on
                                                    c.Gender equals g.GenderId
-                                                   from e in contractorFindingDemoContext.ContractorDetails
+                                                   //from e in contractorFindingDemoContext.ContractorDetails
                                                    join h in contractorFindingDemoContext.ServiceProvidings on
-                                                   e.Services equals h.ServiceId
+                                                   c.Services equals h.ServiceId
                                                    select new ContractorDisplay
                                                    {
                                                        ContractorId = c.ContractorId,
@@ -55,11 +66,11 @@ namespace Service
 
         //UPDATE
 
-        public bool updateContractorDetails(ContractorDetail contractorDetail)
+        public string updateContractorDetails(ContractorDetail contractorDetail)
         {
-            using (var context = new ContractorFindingDemoContext())
-            {
-                var contractorobj = context.ContractorDetails.Where(c => c.ContractorId == contractorDetail.ContractorId).FirstOrDefault();
+            //using (var context = new ContractorFindingDemoContext())
+            //{
+                var contractorobj = contractorFindingDemoContext.ContractorDetails.Where(c => c.ContractorId == contractorDetail.ContractorId).FirstOrDefault();
                 if (contractorobj != null)
                 {
 
@@ -72,19 +83,19 @@ namespace Service
                     contractorobj.Pincode = contractorDetail.Pincode;
                     if (contractorobj.CompanyName != null && contractorobj.Pincode != null && contractorDetail.License != null)
                     {
-                        context.SaveChanges();
-                        return true;
+                    contractorFindingDemoContext.SaveChanges();
+                        return "sucessfully Updated!";
                     }
                     else
                     {
-                        return false;
+                        return "Updation failed";
                     }
                 }
                 else
                 {
-                    return false;
+                    return "Updation failed";   
                 }
-            }
+            //}
         }
 
         //DELETE

@@ -33,21 +33,21 @@ namespace Service
                                           UserId = u.UserId,
                                           TypeUser = ud.Usertype1,
                                           FirstName = u.FirstName,
-                                          LastName = u.FirstName,
+                                          LastName = u.LastName,
                                           EmailId = u.EmailId,
                                           PhoneNumber = u.PhoneNumber,
                                       }).ToList();
             return user;
         }
 
-        public bool checkExistUser(TbUser tbUser)
+        public string checkExistUser(TbUser tbUser)
         {
             var email = contractorFindingDemoContext.TbUsers.Where(e => e.EmailId == tbUser.EmailId).FirstOrDefault();
             if (email == null)
             {
-                return false;
+                return "user doesnot exist";
             }
-            return true;
+            return "already exist";
         }
 
         //public bool Register(Registration registration)
@@ -61,29 +61,37 @@ namespace Service
         //}
 
         //for Registration
-        public bool Register(Registration registration)
+        public string Register(Registration registration)
         {
-
-            string encryptedPassword = encrypt.EncodePasswordToBase64(registration.Password);
-            registration.CreatedDate = DateTime.Now;
-            registration.UpdatedDate = null;
-            registration.Active = true;
-            string passwordconfirm = encrypt.EncodePasswordToBase64(registration.confirmationPassword);
-            registration.Password = encryptedPassword;
-            registration.confirmationPassword = passwordconfirm;
-            if (registration.Password == registration.confirmationPassword)
+            var email = contractorFindingDemoContext.TbUsers.Where(e => e.EmailId == registration.EmailId).FirstOrDefault();
+            if (email == null)
             {
-                contractorFindingDemoContext.TbUsers.Add(registration);
-                contractorFindingDemoContext.SaveChanges();
-                return true;
+                string encryptedPassword = encrypt.EncodePasswordToBase64(registration.Password);
+                registration.CreatedDate = DateTime.Now;
+                registration.UpdatedDate = null;
+                registration.Active = true;
+                string passwordconfirm = encrypt.EncodePasswordToBase64(registration.confirmationPassword);
+                registration.Password = encryptedPassword;
+                registration.confirmationPassword = passwordconfirm;
+                if (registration.Password == registration.confirmationPassword)
+                {
+                    contractorFindingDemoContext.TbUsers.Add(registration);
+                    contractorFindingDemoContext.SaveChanges();
+                    return "successfully registered";
+                }
+                else
+                {
+                    return "registration failed";
+                }
             }
             else
             {
-                return false;
+                return "registration failed";
             }
         }
 
-        public bool Login(Login login)
+        //for login 
+        public string  Login(Login login)
         {
             string checkingpassword = encrypt.EncodePasswordToBase64(login.Password);
             var myUser = contractorFindingDemoContext.TbUsers.
@@ -91,16 +99,14 @@ namespace Service
                 && u.Password == checkingpassword);
             if (myUser == null)
             {
-                return false;
+                return "login failed";
             }
             else
             {
-                return true;
+                return "login succesfully";
             }
 
         }
-
-        //for forgotpassword case
 
         //public bool forgotpassword(Login login)
         //{
@@ -112,14 +118,14 @@ namespace Service
         //    return true;
         //}
 
-        //for forgotpassword case
-        public bool forgotpassword(Login login)
+        //for forgotpassword case(Update)
+        public string forgotpassword(Login login)
         {
 
             var userWithSameEmail = contractorFindingDemoContext.TbUsers.Where(m => m.EmailId == login.EmailId).SingleOrDefault();
             if (userWithSameEmail == null)
             {
-                return false;
+                return "Updation Failed";
             }
             else
             {
@@ -132,11 +138,11 @@ namespace Service
                     userWithSameEmail.UpdatedDate = DateTime.Now;
                     contractorFindingDemoContext.Entry(userWithSameEmail).State = EntityState.Modified;
                     contractorFindingDemoContext.SaveChanges();
-                    return true;
+                    return "Successful!";
                 }
                 else
                 {
-                    return false;
+                    return "Updation Failed";
                 }
 
             }

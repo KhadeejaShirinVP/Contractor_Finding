@@ -46,10 +46,10 @@ namespace API.Controllers
             {
                 var userexist = userService.checkExistUser(registration);
 
-                if (userexist == false)
+                if (userexist != null)
                 {
                     var details = userService.Register(registration);
-                    if (details == true)
+                    if (details !=null)
                     {
                         return new JsonResult(new CrudStatus() { Status = true, Message = "Registration Successful!" });
                     }
@@ -78,7 +78,7 @@ namespace API.Controllers
             try
             {
                 var details = userService.Login(login);
-                if (details == true)
+                if (details != null)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Login Successfull!" });
                 }
@@ -98,7 +98,7 @@ namespace API.Controllers
             try
             {
                 var details = userService.forgotpassword(login);
-                if (details == true)
+                if (details != null)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Password Updated" });
                 }
