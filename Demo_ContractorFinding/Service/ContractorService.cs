@@ -26,16 +26,25 @@ namespace Service
         public string CreateContractor(ContractorDetail contractorDetail)
         {
             var id = contractorFindingDemoContext.TbUsers.Where(u => u.UserId == contractorDetail.ContractorId).FirstOrDefault();
-            var checklicense = contractorFindingDemoContext.ContractorDetails.Where(u=>u.License == contractorDetail.License).FirstOrDefault();
-            if (id != null && checklicense!=null)
+            var checklicense = contractorFindingDemoContext.ContractorDetails.Where(u => u.License == contractorDetail.License).FirstOrDefault();
+            if (id != null && checklicense == null)
             {
-                contractorFindingDemoContext.ContractorDetails.Add(contractorDetail);
-                contractorFindingDemoContext.SaveChanges();
-                return "Successful!";
+                var license = contractorDetail.License.Trim();
+                if (license == string.Empty)
+                {
+                    return null;
+
+                }
+                else
+                {
+                    contractorFindingDemoContext.ContractorDetails.Add(contractorDetail);
+                    contractorFindingDemoContext.SaveChanges();
+                    return "Successful!";
+                }
             }
             else
             {
-                return "failed";
+                return null;
             }
         }
 
@@ -70,8 +79,10 @@ namespace Service
         {
             //using (var context = new ContractorFindingDemoContext())
             //{
-                var contractorobj = contractorFindingDemoContext.ContractorDetails.Where(c => c.ContractorId == contractorDetail.ContractorId).FirstOrDefault();
-                if (contractorobj != null)
+            var contractorobj = contractorFindingDemoContext.ContractorDetails.Where(c => c.ContractorId == contractorDetail.ContractorId ).FirstOrDefault();
+            var licenseobj = contractorFindingDemoContext.ContractorDetails.Where(c => c.License == contractorDetail.License).FirstOrDefault();
+            var licensecon = contractorobj.License;
+            if (contractorobj != null && licenseobj!=null)
                 {
 
                     contractorobj.CompanyName = contractorDetail.CompanyName;
@@ -81,7 +92,7 @@ namespace Service
                     contractorobj.Lattitude = contractorDetail?.Lattitude;
                     contractorobj.Longitude = contractorDetail?.Longitude;
                     contractorobj.Pincode = contractorDetail.Pincode;
-                    if (contractorobj.CompanyName != null && contractorobj.Pincode != null && contractorDetail.License != null)
+                    if (contractorDetail.CompanyName != null && contractorDetail.Pincode != 0 &&contractorDetail.ContractorId==contractorobj.ContractorId && contractorDetail.License== licensecon)
                     {
                     contractorFindingDemoContext.SaveChanges();
                         return "sucessfully Updated!";

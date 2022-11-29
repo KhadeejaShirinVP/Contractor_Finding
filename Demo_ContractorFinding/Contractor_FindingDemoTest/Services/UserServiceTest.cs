@@ -35,7 +35,7 @@ namespace Contractor_FindingDemoTest.Services
 
             //Assert
             var items = Assert.IsType<List<UserDisplay>>(result);
-            Assert.Equal(5, items.Count);
+            Assert.Equal(5,items.Count);
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace Contractor_FindingDemoTest.Services
         public void Test_Register()
         {
             //Arrange
-            var user = new Registration() { TypeUser = 1, FirstName = "tarun", LastName = "na", EmailId = "tarunag@gmail.com", Password = "tarun123", confirmationPassword = "tarun123", PhoneNumber = 223456789, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
+            var user = new Registration() { TypeUser = 2, FirstName = "ram", LastName = "das", EmailId = "ram@gmail.com", Password = "ram@123", PhoneNumber = 23456789, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
@@ -84,7 +84,7 @@ namespace Contractor_FindingDemoTest.Services
         public void LogIn_with_correct_mail_password()
         {
             //Arrange
-            var user = new Login() { EmailId = "tarunag@gmail.com", Password = "tarun123" };
+            var user = new Login() { EmailId = "ram@gmail.com", Password = "ram@123" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
@@ -99,7 +99,7 @@ namespace Contractor_FindingDemoTest.Services
         public void LogIn_with_correct_mail_wrong_password()
         {
             //Arrange
-            var user = new Login() { EmailId = "tarunag@gmail.com", Password = "SDFGH567" };
+            var user = new Login() { EmailId = "ram@gmail.com", Password = "SDFGH567" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
@@ -129,7 +129,7 @@ namespace Contractor_FindingDemoTest.Services
         public void Forget_Password_Test()
         {
             //Arrange
-            var user = new Login() { EmailId = "tarunag@gmail.com", Password = "tarun@1234", confirmPassword = "tarun@1234" };
+            var user = new Login() { EmailId = "shirin@gmail.com", Password = "shirin123", confirmPassword = "shirin123" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act

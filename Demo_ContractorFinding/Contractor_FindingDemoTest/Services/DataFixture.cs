@@ -41,8 +41,8 @@ namespace Contractor_FindingDemoTest.Services
                 new TbUser(){ UserId=1, TypeUser=1, FirstName="khadeeja", LastName="shirin", EmailId="shirin@gmail.com", Password="shirin@123", PhoneNumber=9876567898, CreatedDate=DateTime.Now, UpdatedDate=null, Active=true },
                 new TbUser(){ UserId=2, TypeUser=1, FirstName="tarun", LastName="na", EmailId="tarunag@gmail.com", Password="tarun123", PhoneNumber=223456789, CreatedDate=DateTime.Now, UpdatedDate=null, Active=true },
                 new TbUser(){ UserId=3, TypeUser=2, FirstName="vineeth", LastName="red", EmailId="vineeth@gmail.com", Password="vinny@123", PhoneNumber=1234567890, CreatedDate=DateTime.Now, UpdatedDate=null, Active=true },
-                new TbUser(){ UserId=4, TypeUser=2, FirstName="pavan", LastName="mani", EmailId="pavan@gmail.com", Password="pavan@123", PhoneNumber=45678908765, CreatedDate=DateTime.Now, UpdatedDate=null, Active=true }
-
+                new TbUser(){ UserId=4, TypeUser=2, FirstName="pavan", LastName="mani", EmailId="pavan@gmail.com", Password="pavan@123", PhoneNumber=45678908765, CreatedDate=DateTime.Now, UpdatedDate=null, Active=true },
+                new TbUser(){ UserId=5,TypeUser=2,FirstName="ram",LastName="das",EmailId="ram@gmail.com",Password="ram@123",PhoneNumber=23456789,CreatedDate=DateTime.Now,UpdatedDate=null, Active=true }
             };
             context.TbUsers.AddRange(user);
             context.SaveChanges();
@@ -69,6 +69,7 @@ namespace Contractor_FindingDemoTest.Services
             {
                 new ContractorDetail(){ContractorId=3,CompanyName="vinnyConstruction",Gender=1,License="AP-23456789",Services=3,Lattitude=3.45,Longitude=5.34,Pincode=676563,PhoneNumber=1234567890},
                 new ContractorDetail(){ContractorId=4,CompanyName="pavanTraders",Gender=1,License="KA-8765437",Services=2,Lattitude=9.54,Longitude=4.36,Pincode=864357,PhoneNumber=45678908765},
+                //new ContractorDetail(){ContractorId=5,CompanyName="ramtraders",Gender=2,License="KL-456789",Services=1,Lattitude=7.45,Longitude=7.14,Pincode=765432,PhoneNumber=9876543322}
             };
             context.ContractorDetails.AddRange(contractor);
             context.SaveChanges();
