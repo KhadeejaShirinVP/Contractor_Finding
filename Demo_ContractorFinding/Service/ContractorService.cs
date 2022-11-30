@@ -77,8 +77,7 @@ namespace Service
 
         public string updateContractorDetails(ContractorDetail contractorDetail)
         {
-            //using (var context = new ContractorFindingDemoContext())
-            //{
+            
             var contractorobj = contractorFindingDemoContext.ContractorDetails.Where(c => c.ContractorId == contractorDetail.ContractorId ).FirstOrDefault();
             var licenseobj = contractorFindingDemoContext.ContractorDetails.Where(c => c.License == contractorDetail.License).FirstOrDefault();
             var licensecon = contractorobj.License;
@@ -106,7 +105,7 @@ namespace Service
                 {
                     return null;   
                 }
-            //}
+           
         }
 
         //DELETE

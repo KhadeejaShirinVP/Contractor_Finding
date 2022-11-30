@@ -93,10 +93,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
-            var expected= "Updation failed";
+           
 
             //Assert
-            Assert.Equal(result, expected);
+            Assert.Null(result);
 
         }
 
@@ -109,10 +109,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
-            var expected = "Updation failed";
+           
 
             //Assert
-            Assert.Equal(result, expected);
+            Assert.Null(result);
 
         }
 
@@ -124,10 +124,9 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
-            var expected = "Updation failed";
 
             //Assert
-            Assert.Equal(result, expected);
+            Assert.Null(result);
 
         }
 
@@ -139,10 +138,9 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
-            var expected = "Updation failed";
 
             //Assert
-            Assert.Equal(result, expected);
+            Assert.Null(result);
 
         }
     }

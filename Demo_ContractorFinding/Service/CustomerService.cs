@@ -21,11 +21,29 @@ namespace Service
         }
 
         //create
-        public bool CreateCustomer(TbCustomer tbCustomer)
+        public string CreateCustomer(TbCustomer tbCustomer)
         {
-            contractorFindingDemoContext.TbCustomers.Add(tbCustomer);
-            contractorFindingDemoContext.SaveChanges();
-            return true;
+            var registrationID = contractorFindingDemoContext.TbCustomers.Where(r => r.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
+            if (registrationID == null && tbCustomer.LandSqft != null)
+            {
+                var ID = tbCustomer.RegistrationNo.Trim();
+                if (ID == string.Empty)
+                {
+                    return null;
+                }
+                else
+                {
+                    contractorFindingDemoContext.TbCustomers.Add(tbCustomer);
+                    contractorFindingDemoContext.SaveChanges();
+                    return "Successfully Added";
+                }
+            }
+            else
+            {
+                return null;
+            }
+
+
         }
 
         //RETRIEVE
@@ -48,7 +66,7 @@ namespace Service
         }
 
         //UPDATE
-        public bool UpdateCustomerDetails(TbCustomer tbCustomer)
+        public string UpdateCustomerDetails(TbCustomer tbCustomer)
         {
             using (var context = new ContractorFindingDemoContext())
             {
@@ -63,13 +81,13 @@ namespace Service
                     if (customer.LandSqft != null && customer.RegistrationNo != null && customer.Pincode != null)
                     {
                         context.SaveChanges();
-                        return true;
+                        return "sucessfully Updated!";
                     }
-                    return false;
+                    return null;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
 
             }         
