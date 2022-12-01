@@ -93,5 +93,18 @@ namespace API.Controllers
             }
 
         }
+
+        [HttpGet("Pincode")]
+        public JsonResult SearchBypincode(int pin)
+        {
+            try
+            {
+                return new JsonResult(contractorService.SearchBypincode(pin).ToList());
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
     }
 }

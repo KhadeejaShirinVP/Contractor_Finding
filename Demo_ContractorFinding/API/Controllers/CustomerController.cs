@@ -91,5 +91,32 @@ namespace API.Controllers
                 return new JsonResult(ex.Message);
             }
         }
+
+        //[HttpGet("pincode")]
+        //public JsonResult GetCOntractordetailsByPincode(int pincode)
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(customerService.GetCOntractordetailsByPincode(pincode).ToList());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
+        ////search
+        //[HttpGet("{Pincode}")]
+        //public JsonResult SearchByPincode(int pincode)
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(customerService.SearchByPincode(pincode).ToList());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
+
     }
 }

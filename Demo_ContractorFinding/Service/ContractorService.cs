@@ -7,6 +7,7 @@ using Service.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -51,9 +52,29 @@ namespace Service
         //RETRIEVE
         public List<ContractorDisplay> GetContractorDetails()
         {
+            //List<ContractorDisplay> contractors = (from c in contractorFindingDemoContext.ContractorDetails
+            //                                       join g in contractorFindingDemoContext.TbGenders on
+            //                                       c.Gender equals g.GenderId
+            //                                       //from e in contractorFindingDemoContext.ContractorDetails
+            //                                       join h in contractorFindingDemoContext.ServiceProvidings on
+            //                                       c.Services equals h.ServiceId
+            //                                       select new ContractorDisplay
+            //                                       {
+            //                                           ContractorId = c.ContractorId,
+            //                                           CompanyName = c.CompanyName,
+            //                                           Gender = g.GenderType,
+            //                                           License = c.License,
+            //                                           Services = h.ServiceName,
+            //                                           Lattitude = c.Lattitude,
+            //                                           Longitude = c.Longitude,
+            //                                           Pincode = c.Pincode,
+            //                                           PhoneNumber = c.PhoneNumber,
+
+            //                                       }).ToList();
             List<ContractorDisplay> contractors = (from c in contractorFindingDemoContext.ContractorDetails
                                                    join g in contractorFindingDemoContext.TbGenders on
                                                    c.Gender equals g.GenderId
+                                                   join user in contractorFindingDemoContext.TbUsers on c.ContractorId equals user.UserId
                                                    //from e in contractorFindingDemoContext.ContractorDetails
                                                    join h in contractorFindingDemoContext.ServiceProvidings on
                                                    c.Services equals h.ServiceId
@@ -67,8 +88,10 @@ namespace Service
                                                        Lattitude = c.Lattitude,
                                                        Longitude = c.Longitude,
                                                        Pincode = c.Pincode,
-                                                       PhoneNumber = c.PhoneNumber,
-
+                                                       FirstName = user.FirstName,
+                                                       LastName = user.LastName,
+                                                       EmailId = user.EmailId,
+                                                       PhoneNumber = c.PhoneNumber
                                                    }).ToList();
             return contractors;
         }
@@ -116,6 +139,13 @@ namespace Service
             contractorFindingDemoContext.SaveChanges();
             return true;
         }
+        
+        //search
+        public List<ContractorDisplay> SearchBypincode(int pincode)
+        {
+            return GetContractorDetails().Where(x => x.Pincode == pincode).ToList();
+        }
+
 
     }
 }

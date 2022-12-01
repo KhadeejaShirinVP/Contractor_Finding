@@ -15,5 +15,6 @@ namespace Service.Interfaces
         string UpdateCustomerDetails(TbCustomer tbCustomer);
 
         bool DeleteCustomer(TbCustomer tbCustomer);
+    
     }
 }

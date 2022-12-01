@@ -43,7 +43,6 @@ namespace Service
                 return null;
             }
 
-
         }
 
         //RETRIEVE
@@ -101,5 +100,49 @@ namespace Service
             contractorFindingDemoContext.SaveChanges();
             return true;
         }
+
+        //search
+        //public List<ContractorDisplay> GetCOntractordetailsByPincode()
+        //{
+        //    var getpincode = contractorFindingDemoContext.ContractorDetails.Where(x => x.Pincode == pincode).FirstOrDefault();
+        //    ////var getpincode = contractorFindingDemoContext.ContractorDetails.Where(x=>x.Pincode==pincode).FirstOrDefault();
+        //    if (getpincode == null)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //    List<ContractorDisplay> contractors = (from c in contractorFindingDemoContext.ContractorDetails
+        //                                               join g in contractorFindingDemoContext.TbGenders on
+        //                                               c.Gender equals g.GenderId
+        //                                               //from e in contractorFindingDemoContext.ContractorDetails
+        //                                               join h in contractorFindingDemoContext.ServiceProvidings on
+        //                                               c.Services equals h.ServiceId
+        //                                               select new ContractorDisplay
+        //                                               {
+        //                                                   ContractorId = c.ContractorId,
+        //                                                   CompanyName = c.CompanyName,
+        //                                                   Gender = g.GenderType,
+        //                                                   License = c.License,
+        //                                                   Services = h.ServiceName,
+        //                                                   Lattitude = c.Lattitude,
+        //                                                   Longitude = c.Longitude,
+        //                                                   Pincode = c.Pincode,
+        //                                                   FirstName = c.FirstName,
+        //                                                   LastName = c.LastName,
+        //                                                   EmailId = c.EmailId,
+        //                                                   PhoneNumber = c.PhoneNumber,
+        //                                               }).ToList();
+        //        return contractors;
+        //    }
+        //}
+
+        //public List<ContractorDisplay>SearchByPincode(int pincode)
+        //{
+        //    return GetCOntractordetailsByPincode().Where(p => p.Pincode == pincode).ToList();
+        //}
+
+      
     }
+
 }
