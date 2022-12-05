@@ -15,6 +15,10 @@ namespace Service.Interfaces
         string UpdateCustomerDetails(TbCustomer tbCustomer);
 
         bool DeleteCustomer(TbCustomer tbCustomer);
-    
+        public List<ContractorDisplay> SearchBypincode(int pincode);
+
+        string SendMessage(long phonenumber, string reggistration,int id);
+
     }
 }
+

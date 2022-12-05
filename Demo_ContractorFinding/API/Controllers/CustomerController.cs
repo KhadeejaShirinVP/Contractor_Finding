@@ -14,11 +14,13 @@ namespace API.Controllers
         private readonly ContractorFindingDemoContext contractorFindingDemoContext;
         private readonly ICustomerService customerService;
 
+
         public CustomerController(ContractorFindingDemoContext contractorFindingDemoContext, ICustomerService customerService)
         {
             this.contractorFindingDemoContext = contractorFindingDemoContext;
             this.customerService = customerService;
         }
+
         //create
         [HttpPut]
         public JsonResult CreateContractor(TbCustomer tbCustomer)
@@ -92,31 +94,32 @@ namespace API.Controllers
             }
         }
 
-        //[HttpGet("pincode")]
-        //public JsonResult GetCOntractordetailsByPincode(int pincode)
-        //{
-        //    try
-        //    {
-        //        return new JsonResult(customerService.GetCOntractordetailsByPincode(pincode).ToList());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new JsonResult(ex.Message);
-        //    }
-        //}
-        ////search
-        //[HttpGet("{Pincode}")]
-        //public JsonResult SearchByPincode(int pincode)
-        //{
-        //    try
-        //    {
-        //        return new JsonResult(customerService.SearchByPincode(pincode).ToList());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new JsonResult(ex.Message);
-        //    }
-        //}
+        //search
+        [HttpGet("Pincode")]
+        public JsonResult SearchBypincode(int pin)
+        {
+            try
+            {
+                return new JsonResult(customerService.SearchBypincode(pin).ToList());
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
 
+        //sending
+        [HttpPost("contractorphone")]
+        public JsonResult SendNotification(long phonenumber, string registration,int id)
+        {
+            try
+            {
+                return new JsonResult(customerService.SendMessage(phonenumber, registration,id));
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
     }
 }

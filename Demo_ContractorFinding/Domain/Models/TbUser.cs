@@ -27,5 +27,7 @@ public partial class TbUser
 
     public virtual ICollection<ContractorDetail> ContractorDetails { get; } = new List<ContractorDetail>();
 
+    public virtual ICollection<TbCustomer> TbCustomers { get; } = new List<TbCustomer>();
+
     public virtual UserType? TypeUserNavigation { get; set; }
 }

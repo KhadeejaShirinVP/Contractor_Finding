@@ -139,13 +139,5 @@ namespace Service
             contractorFindingDemoContext.SaveChanges();
             return true;
         }
-        
-        //search
-        public List<ContractorDisplay> SearchBypincode(int pincode)
-        {
-            return GetContractorDetails().Where(x => x.Pincode == pincode).ToList();
-        }
-
-
     }
 }

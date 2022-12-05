@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Domain;
 
-public partial class ContractorDetail 
+public partial class ContractorDetail
 {
     public int? ContractorId { get; set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Models
 {
-    public class CustomerDisplay
+    public class CustomerDisplay:TbUser
     {
         public double LandSqft { get; set; }
 

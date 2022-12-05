@@ -14,7 +14,6 @@ public partial class ContractorFindingDemoContext : DbContext
     public ContractorFindingDemoContext(DbContextOptions<ContractorFindingDemoContext> options)
         : base(options)
     {
-
     }
 
     public virtual DbSet<ContractorDetail> ContractorDetails { get; set; }
@@ -110,6 +109,10 @@ public partial class ContractorFindingDemoContext : DbContext
             entity.HasOne(d => d.BuildingTypeNavigation).WithMany(p => p.TbCustomers)
                 .HasForeignKey(d => d.BuildingType)
                 .HasConstraintName("FK__Tb_Custom__Build__36B12243");
+
+            entity.HasOne(d => d.Customer).WithMany(p => p.TbCustomers)
+                .HasForeignKey(d => d.CustomerId)
+                .HasConstraintName("FK__Tb_Custom__Custo__47DBAE45");
         });
 
         modelBuilder.Entity<TbGender>(entity =>
