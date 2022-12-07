@@ -10,14 +10,13 @@ namespace Service.Interfaces
 {
     public interface ICustomerService
     {
-        string CreateCustomer(TbCustomer tbCustomer);
+        bool CreateCustomer(TbCustomer tbCustomer);
         List<CustomerDisplay> GetCustomerDetails();
-        string UpdateCustomerDetails(TbCustomer tbCustomer);
+        bool UpdateCustomerDetails(TbCustomer tbCustomer);
 
         bool DeleteCustomer(TbCustomer tbCustomer);
         public List<ContractorDisplay> SearchBypincode(int pincode);
-
-        string SendMessage(long phonenumber, string reggistration,int id);
+        string SendMessage(long phonenumber, string reggistration, int id);
 
     }
 }

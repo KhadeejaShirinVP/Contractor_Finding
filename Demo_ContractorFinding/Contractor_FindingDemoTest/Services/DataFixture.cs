@@ -73,6 +73,23 @@ namespace Contractor_FindingDemoTest.Services
             };
             context.ContractorDetails.AddRange(contractor);
             context.SaveChanges();
+
+            var customer = new List<TbCustomer>()
+            {
+                new TbCustomer(){LandSqft = 5.34, RegistrationNo = "1232334", BuildingType = 2, Lattitude = 7.45, Longitude = 7.14, Pincode = 765432},
+                new TbCustomer(){LandSqft = 5.24, RegistrationNo = "1232335", BuildingType = 1, Lattitude = 7.75, Longitude = 7.15, Pincode = 765432},
+                //new ContractorDetail(){ContractorId=5,CompanyName="ramtraders",Gender=2,License="KL-456789",Services=1,Lattitude=7.45,Longitude=7.14,Pincode=765432,PhoneNumber=9876543322}
+            };
+            context.TbCustomers.AddRange(customer);
+            context.SaveChanges();
+
+            var buildings = new List<TbBuilding>()
+            {
+                new TbBuilding(){Id =2, Building="main Building"},
+                new TbBuilding(){Id =1, Building="sub Building"}
+            };
+            context.TbBuildings.AddRange(buildings);
+            context.SaveChanges();
         }
 
         public void Dispose()

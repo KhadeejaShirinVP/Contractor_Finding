@@ -27,8 +27,7 @@ namespace API.Controllers
         {
             try
             {
-                var details = userService.GetUserDetails();
-                return new JsonResult(details);
+                return new JsonResult(userService.GetUserDetails().ToList());
             }
             catch (Exception ex)
             {
@@ -46,10 +45,10 @@ namespace API.Controllers
             {
                 var userexist = userService.checkExistUser(registration);
 
-                if (userexist != null)
+                if (userexist == true)
                 {
                     var details = userService.Register(registration);
-                    if (details !=null)
+                    if (details == true)
                     {
                         return new JsonResult(new CrudStatus() { Status = true, Message = "Registration Successful!" });
                     }
@@ -73,7 +72,7 @@ namespace API.Controllers
 
         //for user login 
         [HttpPost("login")]
-        public JsonResult LoginUser(Login login)
+        public JsonResult LoginUser(TbUser login)
         {
             try
             {
@@ -93,12 +92,12 @@ namespace API.Controllers
 
         //for forgot password
         [HttpPost("forgotpassword")]
-        public JsonResult ForgotPassword(Login login)
+        public JsonResult ForgotPassword(Registration login)
         {
             try
             {
                 var details = userService.forgotpassword(login);
-                if (details != null)
+                if (details == true)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Password Updated" });
                 }

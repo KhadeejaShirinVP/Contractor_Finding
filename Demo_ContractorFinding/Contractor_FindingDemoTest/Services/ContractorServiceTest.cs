@@ -12,12 +12,6 @@ using System.Text;
 
 namespace Contractor_FindingDemoTest.Services
 {
-    [CollectionDefinition("Data Base")]
-    public class DataBasecollection : ICollectionFixture<DataFixture>
-    {
-
-    }
-
     [Collection("Data Base")]
     public class ContractorServiceTest
     {
@@ -26,7 +20,7 @@ namespace Contractor_FindingDemoTest.Services
 
         public ContractorServiceTest(DataFixture fixture)
         {
-           _fixture = fixture;
+            _fixture = fixture;
             contractorService = new ContractorService(_fixture.context);
         }
 
@@ -38,10 +32,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.CreateContractor(contractor);
-            var expected= "Successful!";
+            var expected = true;
 
             //Assert
-            Assert.Equal(expected,result);
+            Assert.Equal(expected, result);
         }
         [Fact]
         public void Test_AddContractorFailcondition()
@@ -51,10 +45,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.CreateContractor(contractor);
-            //var expected = "failed";
+            var expected = false;
 
             //Assert
-            Assert.Null(result);
+            Assert.Equal(result, expected);
         }
         [Fact]
         public void Get_All_Contractor()
@@ -77,8 +71,8 @@ namespace Contractor_FindingDemoTest.Services
             var contractor = new ContractorDetail() { ContractorId = 4, CompanyName = "pavanmaniTraders", Gender = 1, License = "KA-8765437", Services = 3, Lattitude = 9.54, Longitude = 4.36, Pincode = 864357, PhoneNumber = 45678908765 };
 
             //Act
-            var result=contractorService.updateContractorDetails(contractor);
-            var expected= "sucessfully Updated!";
+            var result = contractorService.updateContractorDetails(contractor);
+            var expected = true;
 
             //Assret
 
@@ -93,10 +87,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
-           
+            var expected = false;
 
             //Assert
-            Assert.Null(result);
+            Assert.Equal(result, expected);
 
         }
 
@@ -109,10 +103,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
-           
+            var excepted = false;
 
             //Assert
-            Assert.Null(result);
+            Assert.Equal(result, excepted);
 
         }
 
@@ -124,9 +118,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
+            var excepted = false;
 
             //Assert
-            Assert.Null(result);
+            Assert.Equal(result, excepted);
 
         }
 
@@ -134,13 +129,14 @@ namespace Contractor_FindingDemoTest.Services
         public void UpdateDetails_Test_WithoutPincode()
         {
             //Arrange
-            var contractor = new ContractorDetail() { ContractorId = 3,CompanyName="reddyconstruction", Gender = 1, License = "AP-23456789", Services = 1, Lattitude = 9.87, Longitude = 9.76, PhoneNumber = 1234567890 };
+            var contractor = new ContractorDetail() { ContractorId = 3, CompanyName = "reddyconstruction", Gender = 1, License = "AP-23456789", Services = 1, Lattitude = 9.87, Longitude = 9.76, PhoneNumber = 1234567890 };
 
             //Act
             var result = contractorService.updateContractorDetails(contractor);
+            var excepted = false;
 
             //Assert
-            Assert.Null(result);
+            Assert.Equal(result, excepted);
 
         }
     }

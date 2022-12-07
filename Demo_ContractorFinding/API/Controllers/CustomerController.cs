@@ -28,18 +28,20 @@ namespace API.Controllers
             try
             {
                 var customer = customerService.CreateCustomer(tbCustomer);
-                if (customer != null)
+                if (customer == true)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Added Successful!" });
                 }
-                return new JsonResult(new CrudStatus() { Status = false, Message = "Failed" });
+                else
+                {
+                    return new JsonResult(new CrudStatus() { Status = false, Message = "Failed" });
+                }
             }
             catch (Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
         }
-
 
         //RETRIEVE
         [HttpGet]
@@ -62,7 +64,7 @@ namespace API.Controllers
             try
             {
                 var contractor = customerService.UpdateCustomerDetails(tbCustomer);
-                if (contractor !=null)
+                if (contractor == true)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
                 }
@@ -77,24 +79,24 @@ namespace API.Controllers
 
         //DELETE
         [HttpDelete]
-        public JsonResult DeleteCustomer (TbCustomer tbCustomer)
+        public JsonResult DeleteCustomer(TbCustomer tbCustomer)
         {
             try
             {
-                var customer=customerService.DeleteCustomer(tbCustomer);
-                if(customer==true)
+                var customer = customerService.DeleteCustomer(tbCustomer);
+                if (customer == true)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Deleted successfully!" });
                 }
                 return new JsonResult(new CrudStatus() { Status = false });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
         }
 
-        //search
+        //SerachingContractor
         [HttpGet("Pincode")]
         public JsonResult SearchBypincode(int pin)
         {
@@ -108,13 +110,14 @@ namespace API.Controllers
             }
         }
 
-        //sending
-        [HttpPost("contractorphone")]
-        public JsonResult SendNotification(long phonenumber, string registration,int id)
+        //Sending SMS
+        [HttpPost("SendingToContractor")]
+        public JsonResult SendNotification(long phonenumber, string registration, int id)
         {
             try
             {
-                return new JsonResult(customerService.SendMessage(phonenumber, registration,id));
+
+                return new JsonResult(customerService.SendMessage(phonenumber, registration, id));
             }
             catch (Exception ex)
             {

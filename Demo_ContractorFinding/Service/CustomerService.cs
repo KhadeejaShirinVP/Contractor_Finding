@@ -28,7 +28,7 @@ namespace Service
         }
 
         //create
-        public string CreateCustomer(TbCustomer tbCustomer)
+        public bool CreateCustomer(TbCustomer tbCustomer)
         {
             var registrationID = contractorFindingDemoContext.TbCustomers.Where(r => r.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
             if (registrationID == null && tbCustomer.LandSqft != null)
@@ -36,20 +36,19 @@ namespace Service
                 var ID = tbCustomer.RegistrationNo.Trim();
                 if (ID == string.Empty)
                 {
-                    return null;
+                    return false;
                 }
                 else
                 {
                     contractorFindingDemoContext.TbCustomers.Add(tbCustomer);
                     contractorFindingDemoContext.SaveChanges();
-                    return "Successfully Added";
+                    return true;
                 }
             }
             else
             {
-                return null;
+                return false;
             }
-
         }
 
         //RETRIEVE
@@ -58,17 +57,11 @@ namespace Service
             List<CustomerDisplay> customers = (from c in contractorFindingDemoContext.TbCustomers
                                                join b in contractorFindingDemoContext.TbBuildings on
                                                c.BuildingType equals b.Id
-                                               join user in contractorFindingDemoContext.TbUsers on c.CustomerId equals user.UserId
                                                select new CustomerDisplay
                                                {
-
                                                    LandSqft = c.LandSqft,
                                                    RegistrationNo = c.RegistrationNo,
                                                    BuildingType = b.Building,
-                                                   FirstName = user.FirstName,
-                                                   LastName = user.LastName,
-                                                   EmailId = user.EmailId,
-                                                   PhoneNumber = user.PhoneNumber,
                                                    Lattitude = c.Lattitude,
                                                    Longitude = c.Longitude,
                                                    Pincode = c.Pincode,
@@ -78,39 +71,46 @@ namespace Service
         }
 
         //UPDATE
-        public string UpdateCustomerDetails(TbCustomer tbCustomer)
+        public bool UpdateCustomerDetails(TbCustomer tbCustomer)
         {
-            
-            
+            {
                 var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
-            if (customer != null)
-            {
-                customer.LandSqft = tbCustomer.LandSqft;
-                customer.BuildingType = tbCustomer.BuildingType;
-                customer.Lattitude = tbCustomer.Lattitude;
-                customer.Longitude = tbCustomer.Longitude;
-                customer.Pincode = tbCustomer.Pincode;
-                if (customer.LandSqft != null && customer.RegistrationNo != null && customer.Pincode != null)
+                if (customer != null)
                 {
-                    contractorFindingDemoContext.SaveChanges();
-                    return "sucessfully Updated!";
+                    customer.LandSqft = tbCustomer.LandSqft;
+                    customer.BuildingType = tbCustomer.BuildingType;
+                    customer.Lattitude = tbCustomer.Lattitude;
+                    customer.Longitude = tbCustomer.Longitude;
+                    customer.Pincode = tbCustomer.Pincode;
+                    customer.CustomerId = tbCustomer.CustomerId;
+                    if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
+                    {
+                        contractorFindingDemoContext.SaveChanges();
+                        return true;
+                    }
+                    return false;
                 }
-                return null;
+                else
+                {
+                    return false;
+                }
+
             }
-            else
-            {
-                return null;
-            }       
         }
 
         //DELETE
         public bool DeleteCustomer(TbCustomer tbCustomer)
         {
             TbCustomer customer = contractorFindingDemoContext.TbCustomers.Where(c => c.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault()!;
-            contractorFindingDemoContext.TbCustomers.Remove(customer);
-            contractorFindingDemoContext.SaveChanges();
-            return true;
+            if (customer != null)
+            {
+                contractorFindingDemoContext.TbCustomers.Remove(customer);
+                contractorFindingDemoContext.SaveChanges();
+                return true;
+            }
+            return false;
         }
+
 
         //send message
         public string SendMessage(long phonenumber,string reggistration,int id)

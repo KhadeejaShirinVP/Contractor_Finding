@@ -1,27 +1,38 @@
 ﻿using Moq;
-using Service.Interfaces;
+using Domain.Models;
+using Domain;
+using Moq;
 using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Models;
-using Domain;
+using Microsoft.Extensions.Configuration;
+using Service.Interfaces;
 
 namespace Contractor_FindingDemoTest.Services
 {
-    [Collection ("Data Base")]
-    public class UserServiceTest 
+    [CollectionDefinition("Data Base")]
+    public class DataBasecollection : ICollectionFixture<DataFixture>
+    {
+
+    }
+
+    [Collection("Data Base")]
+    public class UserServiceTest
     {
         DataFixture _fixture;
         UserService userService;
         Mock<IEncrypt> encrypt;
+        Mock<IConfiguration> config;
+      
 
         public UserServiceTest(DataFixture fixture)
         {
             _fixture = fixture;
             encrypt = new Mock<IEncrypt>();
+            config = new Mock<IConfiguration>();
             userService = new UserService(_fixture.context, encrypt.Object);
         }
 
@@ -37,6 +48,7 @@ namespace Contractor_FindingDemoTest.Services
             var expect = _fixture.context.TbUsers.Count();
             var items = Assert.IsType<List<UserDisplay>>(result);
             Assert.Equal(expect, items.Count);
+
         }
 
         [Fact]
@@ -47,35 +59,50 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = userService.checkExistUser(user);
-            var excepted = "user doesnot exist";
+            var excepted = true;
 
             //Assert
             Assert.Equal(excepted, result);
         }
 
-        //[Fact]
-        //public void Check_Correct_ConfirmPassword()
-        //{
-        //    //Arrange
-        //    var user = new Registration() { TypeUser = 1, FirstName = "khadeeja", LastName = "shirin", EmailId = "shirin@gmail.com", Password = "shirin@123", confirmationPassword = "shirin@123", PhoneNumber = 9876567898, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
-
-        //    //Act
-        //    var result = userService.CheckPassword(user);
-
-        //    //Assert
-        //    Assert.True(result);
-        //}
-
         [Fact]
         public void Test_Register()
         {
             //Arrange
-            var user = new Registration() { TypeUser = 2, FirstName = "ram", LastName = "das", EmailId = "ram@gmail.com", Password = "ram@123", PhoneNumber = 23456789, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
+            var user = new Registration() { TypeUser = 2, FirstName = "ram", LastName = "das", EmailId = "ram@gmail.com", Password = "ram@123", confirmationPassword = "ram@123", PhoneNumber = 23456789, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
             var result = userService.Register(user);
-            var excepted = "registration failed";
+            var excepted = false;
+
+            //Assert
+            Assert.Equal(result, excepted);
+        }
+        [Fact]
+        public void Test_Unregister()
+        {
+            //Arrange
+            var user = new Registration() { TypeUser = 2, FirstName = "tejo", LastName = "navya", EmailId = "tejo@gmail.com", Password = "tejo@123", confirmationPassword = "tejo@123", PhoneNumber = 973456789, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
+            encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
+
+            //Act
+            var result = userService.Register(user);
+            var excepted = true;
+
+            //Assert
+            Assert.Equal(result, excepted);
+        }
+        [Fact]
+        public void Test_Register_with_Wrong_Confirmpass()
+        {
+            //Arrange
+            var user = new Registration() { TypeUser = 2, FirstName = "tej", LastName = "navya", EmailId = "teja@gmail.com", Password = "tejo@123", confirmationPassword = "tejo123", PhoneNumber = 973456789, CreatedDate = DateTime.Now, UpdatedDate = null, Active = true };
+            encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
+
+            //Act
+            var result = userService.Register(user);
+            var excepted = false;
 
             //Assert
             Assert.Equal(result, excepted);
@@ -85,60 +112,75 @@ namespace Contractor_FindingDemoTest.Services
         public void LogIn_with_correct_mail_password()
         {
             //Arrange
-            var user = new Login() { EmailId = "ram@gmail.com", Password = "ram@123" };
+            var user = new TbUser() { EmailId = "ram@gmail.com", Password = "ram@123" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
             var result = userService.Login(user);
-            var excepted = "login succesfully";
+
 
             //Assert
-            Assert.Equal(result,excepted);
+            Assert.NotNull(result);
         }
 
         [Fact]
         public void LogIn_with_correct_mail_wrong_password()
         {
             //Arrange
-            var user = new Login() { EmailId = "ram@gmail.com", Password = "SDFGH567" };
+            var user = new TbUser() { EmailId = "ram@gmail.com", Password = "SDFGH567" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
             var result = userService.Login(user);
-            var excepted = "login failed";
+            var expected = false;
+
 
             //Assert
-            Assert.Equal(result,excepted);
+            Assert.Equal(expected,result);
         }
 
         [Fact]
         public void LogIn_with_new_mail()
         {
-            //Arrange
-            var user = new Login() { EmailId = "khadeeja@gmail.com", Password = "khade@123" };
+            // Arrange
+            var user = new TbUser() { EmailId = "khadeeja@gmail.com", Password = "khade@123" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
             var result = userService.Login(user);
-            var expected = "login failed";
+            var expected = false;
+
 
             //Assert
-            Assert.Equal(result, expected);
+            Assert.Equal(expected,result);  
         }
 
         [Fact]
         public void Forget_Password_Test()
         {
             //Arrange
-            var user = new Login() { EmailId = "shirin@gmail.com", Password = "shirin123", confirmPassword = "shirin123" };
+            var user = new Registration() { EmailId = "shirin@gmail.com", Password = "shirin123", confirmationPassword = "shirin123" };
             encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
 
             //Act
             var result = userService.forgotpassword(user);
-            var expected= "Successful!";
+            var expected = true;
 
             //Assert
-            Assert.Equal(expected,expected);
+            Assert.Equal(expected, expected);
+        }
+        [Fact]
+        public void Forget_passwrod_Test_wrong_confirmpass()
+        {
+            var user = new Registration() { EmailId = "shirin@gmail.com", Password = "shirin123", confirmationPassword = "shiin123" };
+            encrypt.Setup(method => method.EncodePasswordToBase64(user.Password)).Returns(user.Password);
+
+            //Act
+            var result = userService.forgotpassword(user);
+            var expected = false;
+
+            //Assert
+            Assert.Equal(expected, expected);
         }
     }
 }

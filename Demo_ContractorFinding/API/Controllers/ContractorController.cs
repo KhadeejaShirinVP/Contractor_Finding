@@ -22,14 +22,15 @@ namespace API.Controllers
 
         //create
         [HttpPut]
+
         public JsonResult CreateContractor(ContractorDetail contractorDetail)
         {
             try
             {
                 var contractor = contractorService.CreateContractor(contractorDetail);
-                if (contractor!= null)
+                if (contractor == true)
                 {
-                    return new JsonResult(new CrudStatus() { Status = true, Message = "Added Successful!" });
+                    return new JsonResult(new CrudStatus() { Status = true, Message = "Successful!" });
                 }
                 return new JsonResult(new CrudStatus() { Status = false, Message = "Failed" });
             }
@@ -41,6 +42,7 @@ namespace API.Controllers
 
         //RETRIVE
         [HttpGet]
+
         public JsonResult GetContractorDetails()
         {
             try
@@ -61,7 +63,7 @@ namespace API.Controllers
             try
             {
                 var contractor = contractorService.updateContractorDetails(contractorDetail);
-                if (contractor != null)
+                if (contractor == true && contractorDetail.License != null)
                 {
                     return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
                 }
@@ -93,4 +95,5 @@ namespace API.Controllers
             }
         }
     }
+    
 }

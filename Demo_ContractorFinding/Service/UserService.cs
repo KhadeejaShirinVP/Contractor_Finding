@@ -23,6 +23,7 @@ namespace Service
         }
 
         //For Display
+        //For Display
         public List<UserDisplay> GetUserDetails()
         {
             List<UserDisplay> user = (from u in contractorFindingDemoContext.TbUsers
@@ -31,23 +32,28 @@ namespace Service
                                       select new UserDisplay
                                       {
                                           UserId = u.UserId,
-                                          TypeUser = ud.Usertype1,
                                           FirstName = u.FirstName,
-                                          LastName = u.LastName,
+                                          LastName = u.FirstName,
                                           EmailId = u.EmailId,
+                                          Password = u.Password,
                                           PhoneNumber = u.PhoneNumber,
+                                          UserTypeName = ud.Usertype1,
+                                          CreatedDate = u.CreatedDate,
+                                          UpdatedDate = u.UpdatedDate,
+                                          Active = u.Active,
+                                          TypeUser = u.TypeUser,
                                       }).ToList();
             return user;
         }
 
-        public string checkExistUser(TbUser tbUser)
+        public bool checkExistUser(TbUser tbUser)
         {
             var email = contractorFindingDemoContext.TbUsers.Where(e => e.EmailId == tbUser.EmailId).FirstOrDefault();
             if (email == null)
             {
-                return "user doesnot exist";
+                return true;
             }
-            return "already exist";
+            return false;
         }
 
         //public bool Register(Registration registration)
@@ -61,8 +67,9 @@ namespace Service
         //}
 
         //for Registration
-        public string Register(Registration registration)
+        public bool Register(Registration registration)
         {
+
             var email = contractorFindingDemoContext.TbUsers.Where(e => e.EmailId == registration.EmailId).FirstOrDefault();
             if (email == null)
             {
@@ -77,21 +84,21 @@ namespace Service
                 {
                     contractorFindingDemoContext.TbUsers.Add(registration);
                     contractorFindingDemoContext.SaveChanges();
-                    return "successfully registered";
+                    return true;
                 }
                 else
                 {
-                    return "registration failed";
+                    return false;
                 }
             }
             else
             {
-                return "registration failed";
+                return false;
             }
         }
 
         //for login 
-        public string  Login(Login login)
+        public bool  Login(TbUser login)
         {
             string checkingpassword = encrypt.EncodePasswordToBase64(login.Password);
             var myUser = contractorFindingDemoContext.TbUsers.
@@ -99,11 +106,11 @@ namespace Service
                 && u.Password == checkingpassword);
             if (myUser == null)
             {
-                return "login failed";
+                return false;
             }
             else
             {
-                return "login succesfully";
+                return true;
             }
 
         }
@@ -119,30 +126,30 @@ namespace Service
         //}
 
         //for forgotpassword case(Update)
-        public string forgotpassword(Login login)
+        public bool forgotpassword(Registration login)
         {
 
             var userWithSameEmail = contractorFindingDemoContext.TbUsers.Where(m => m.EmailId == login.EmailId).SingleOrDefault();
             if (userWithSameEmail == null)
             {
-                return "Updation Failed";
+                return false;
             }
             else
             {
 
                 string encrptnewpassword = encrypt.EncodePasswordToBase64(login.Password);
-                string encrptconfirmpassword = encrypt.EncodePasswordToBase64(login.confirmPassword);
+                string encrptconfirmpassword = encrypt.EncodePasswordToBase64(login.confirmationPassword);
                 if (encrptnewpassword == encrptconfirmpassword)
                 {
                     userWithSameEmail.Password = encrptconfirmpassword;
                     userWithSameEmail.UpdatedDate = DateTime.Now;
                     contractorFindingDemoContext.Entry(userWithSameEmail).State = EntityState.Modified;
                     contractorFindingDemoContext.SaveChanges();
-                    return "Successful!";
+                    return true;
                 }
                 else
                 {
-                    return "Updation Failed";
+                    return false;
                 }
 
             }
@@ -151,9 +158,14 @@ namespace Service
         //for delete deatils
         public bool DeleteUser(TbUser user)
         {
-            contractorFindingDemoContext.TbUsers.Remove(user);
-            contractorFindingDemoContext.SaveChanges();
-            return true;
+            var checkid = contractorFindingDemoContext.TbUsers.Where(x => x.UserId == user.UserId).FirstOrDefault();
+            if (checkid != null)
+            {
+                contractorFindingDemoContext.TbUsers.Remove(user);
+                contractorFindingDemoContext.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }
