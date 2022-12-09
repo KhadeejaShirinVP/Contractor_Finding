@@ -1,7 +1,11 @@
-﻿using Domain;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain;
+using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Persistence;
+using Repository;
 using Service.Interfaces;
 
 namespace API.Controllers
@@ -12,12 +16,14 @@ namespace API.Controllers
     {
         private readonly ContractorFindingDemoContext contractorFindingDemoContext;
         private readonly IUserService userService;
+        private readonly IMapper _mapper;
 
         //constructor
-        public UserController(ContractorFindingDemoContext contractorFindingDemoContext, IUserService userService)
+        public UserController(ContractorFindingDemoContext contractorFindingDemoContext, IUserService userService, IMapper mapper)
         {
             this.contractorFindingDemoContext = contractorFindingDemoContext;
             this.userService = userService;
+            _mapper = mapper;
         }
 
         //for get user details
@@ -33,6 +39,36 @@ namespace API.Controllers
             {
                 return new JsonResult(ex.Message);
             }
+        }
+
+        [HttpGet]
+        [MapToApiVersion("2")]
+        [Route("V2")]
+        public ActionResult<List<UserDisplayV2>> GetUsers2()
+        {
+            var users = userService.GetUsers().Select(a => _mapper.Map<UserDisplayV2>(a));
+            return Ok(users);
+        }
+
+        [HttpGet]
+        [MapToApiVersion("3")]
+        [Route("V3")]
+        public JsonResult GetUsers3()
+        {
+            var user = new MapperConfiguration(cfg => cfg.CreateProjection<TbUser, UserDisplayV2>()
+            .ForMember(dto => dto.Usertype, conf =>
+             conf.MapFrom(ol => ol.TypeUserNavigation.Usertype1)));
+            return new JsonResult(contractorFindingDemoContext.TbUsers.ProjectTo<UserDisplayV2>(user).ToList());
+        }
+
+        [HttpGet]
+        [MapToApiVersion("4")]
+        [Route("V4")]
+        public List<UserDisplayV2> GetUsers4()
+        {
+            List<UserDisplayV2>users=AutoMapper<Userview,UserDisplayV2>.Maplist(userService.GetUsers());
+            return users;
+
         }
 
         //for user registration

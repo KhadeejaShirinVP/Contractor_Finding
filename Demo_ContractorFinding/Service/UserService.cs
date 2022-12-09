@@ -167,5 +167,11 @@ namespace Service
             }
             return false;
         }
+
+        public List<Userview> GetUsers()
+        {
+            List<Userview> users = contractorFindingDemoContext.Userviews.ToList();
+            return users;
+        }
     }
 }

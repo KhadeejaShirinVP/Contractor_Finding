@@ -30,9 +30,11 @@ public partial class ContractorFindingDemoContext : DbContext
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=.;Database=Contractor_FindingDemo;Trusted_Connection=True;TrustServerCertificate=True;");
+    public virtual DbSet<Userview> Userviews { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=.;Database=Contractor_FindingDemo;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -165,6 +167,29 @@ public partial class ContractorFindingDemoContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("typeId");
             entity.Property(e => e.Usertype1)
+                .HasMaxLength(30)
+                .IsUnicode(false)
+                .HasColumnName("usertype");
+        });
+
+        modelBuilder.Entity<Userview>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("Userview");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.EmailId)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.LastName)
+                .HasMaxLength(30)
+                .IsUnicode(false);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.Usertype)
                 .HasMaxLength(30)
                 .IsUnicode(false)
                 .HasColumnName("usertype");

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Domain;
 
-public partial class TbCustomer 
+public partial class TbCustomer
 {
     public double LandSqft { get; set; }
 

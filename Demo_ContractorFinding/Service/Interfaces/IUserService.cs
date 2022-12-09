@@ -17,5 +17,6 @@ namespace Service.Interfaces
         public bool Login(TbUser login);
         public bool forgotpassword(Registration login);
         public bool DeleteUser(TbUser user);
+        public List<Userview> GetUsers();
     }
 }
