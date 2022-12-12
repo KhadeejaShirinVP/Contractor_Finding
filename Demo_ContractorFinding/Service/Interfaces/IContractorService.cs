@@ -12,7 +12,8 @@ namespace Service.Interfaces
     {
 
         bool CreateContractor(ContractorDetail contractorDetail);
-        List<ContractorDisplay> GetContractorDetails();
+        //List<ContractorDisplay> GetContractorDetails();
+        Task<IEnumerable<ContractorView>> GetContractorDetails();
          bool updateContractorDetails(ContractorDetail contractorDetail);
 
          bool DeleteContractor(ContractorDetail contractorDetail);

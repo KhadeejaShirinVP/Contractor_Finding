@@ -46,7 +46,7 @@ namespace Contractor_FindingDemoTest.Services
 
             //Assert
             var expect = _fixture.context.TbUsers.Count();
-            var items = Assert.IsType<List<UserDisplay>>(result);
+            var items = Assert.IsType<List<Userview>>(result);
             Assert.Equal(expect, items.Count);
 
         }

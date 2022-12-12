@@ -29,16 +29,23 @@ namespace API.Controllers
         //for get user details
         // GET: api/<ContractorController>
         [HttpGet]
-        public JsonResult Getuserdetails()
+        //public JsonResult Getuserdetails()
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(userService.GetUserDetails().ToList());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //
+
+        public async Task<IActionResult> GetUserDetails()
         {
-            try
-            {
-                return new JsonResult(userService.GetUserDetails().ToList());
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(ex.Message);
-            }
+            var user = await userService.GetUserDetails();
+            var userdto = _mapper.Map<IEnumerable<Userview>>(user);
+            return Ok(userdto);
         }
 
         [HttpGet]

@@ -24,28 +24,35 @@ namespace Service
 
         //For Display
         //For Display
-        public List<UserDisplay> GetUserDetails()
-        {
-            List<UserDisplay> user = (from u in contractorFindingDemoContext.TbUsers
-                                      join ud in contractorFindingDemoContext.UserTypes on
-                                      u.TypeUser equals ud.TypeId
-                                      select new UserDisplay
-                                      {
-                                          UserId = u.UserId,
-                                          FirstName = u.FirstName,
-                                          LastName = u.FirstName,
-                                          EmailId = u.EmailId,
-                                          Password = u.Password,
-                                          PhoneNumber = u.PhoneNumber,
-                                          UserTypeName = ud.Usertype1,
-                                          CreatedDate = u.CreatedDate,
-                                          UpdatedDate = u.UpdatedDate,
-                                          Active = u.Active,
-                                          TypeUser = u.TypeUser,
-                                      }).ToList();
-            return user;
-        }
+        //public List<UserDisplay> GetUserDetails()
+        //{
+        //    List<UserDisplay> user = (from u in contractorFindingDemoContext.TbUsers
+        //                              join ud in contractorFindingDemoContext.UserTypes on
+        //                              u.TypeUser equals ud.TypeId
+        //                              select new UserDisplay
+        //                              {
+        //                                  UserId = u.UserId,
+        //                                  FirstName = u.FirstName,
+        //                                  LastName = u.FirstName,
+        //                                  EmailId = u.EmailId,
+        //                                  Password = u.Password,
+        //                                  PhoneNumber = u.PhoneNumber,
+        //                                  UserTypeName = ud.Usertype1,
+        //                                  CreatedDate = u.CreatedDate,
+        //                                  UpdatedDate = u.UpdatedDate,
+        //                                  Active = u.Active,
+        //                                  TypeUser = u.TypeUser,
+        //                              }).ToList();
+        //    return user;
+        //}
 
+        public async Task<IEnumerable<Userview>> GetUserDetails()
+        {
+            var user = await contractorFindingDemoContext.Userviews.OrderBy(x => x.UserId).ToListAsync();
+            return (IEnumerable<Userview>)user;
+        }
+ 
+        
         public bool checkExistUser(TbUser tbUser)
         {
             var email = contractorFindingDemoContext.TbUsers.Where(e => e.EmailId == tbUser.EmailId).FirstOrDefault();

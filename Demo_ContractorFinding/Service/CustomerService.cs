@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Persistence;
 using Service.Interfaces;
@@ -52,22 +53,28 @@ namespace Service
         }
 
         //RETRIEVE
-        public List<CustomerDisplay> GetCustomerDetails()
-        {
-            List<CustomerDisplay> customers = (from c in contractorFindingDemoContext.TbCustomers
-                                               join b in contractorFindingDemoContext.TbBuildings on
-                                               c.BuildingType equals b.Id
-                                               select new CustomerDisplay
-                                               {
-                                                   LandSqft = c.LandSqft,
-                                                   RegistrationNo = c.RegistrationNo,
-                                                   BuildingType = b.Building,
-                                                   Lattitude = c.Lattitude,
-                                                   Longitude = c.Longitude,
-                                                   Pincode = c.Pincode,
+        //public List<CustomerDisplay> GetCustomerDetails()
+        //{
+        //    List<CustomerDisplay> customers = (from c in contractorFindingDemoContext.TbCustomers
+        //                                       join b in contractorFindingDemoContext.TbBuildings on
+        //                                       c.BuildingType equals b.Id
+        //                                       select new CustomerDisplay
+        //                                       {
+        //                                           LandSqft = c.LandSqft,
+        //                                           RegistrationNo = c.RegistrationNo,
+        //                                           BuildingType = b.Building,
+        //                                           Lattitude = c.Lattitude,
+        //                                           Longitude = c.Longitude,
+        //                                           Pincode = c.Pincode,
 
-                                               }).ToList();
-            return customers;
+        //                                       }).ToList();
+        //    return customers;
+        //}
+
+        public async Task<IEnumerable<CustomerView>> GetCustomerDetails()
+        {
+            var user = await contractorFindingDemoContext.CustomerViews.OrderBy(x => x.UserId).ToListAsync();
+            return (IEnumerable<CustomerView>)user;
         }
 
         //UPDATE
@@ -131,10 +138,10 @@ namespace Service
             }
         }
         //search
-        public List<ContractorDisplay> SearchBypincode(int pincode)
-        {
-            return  _contractorservice.GetContractorDetails().Where(x => x.Pincode == pincode).ToList();
-        }
+        //public List<ContractorDisplay> SearchBypincode(int pincode)
+        //{
+        //    return  _contractorservice.GetContractorDetails().
+        //}
 
     }
 

@@ -1,7 +1,12 @@
-﻿using Domain;
+﻿using AutoMapper;
+using Domain;
+using Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Persistence;
+using Service;
 using Service.Interfaces;
 
 namespace API.Controllers
@@ -12,12 +17,15 @@ namespace API.Controllers
     {
         private readonly ContractorFindingDemoContext contractorFindingDemoContext;
         private readonly IContractorService contractorService;
+        private readonly IMapper _mapper;
+        private readonly Mapper mapper1; 
 
         //Constructor
-        public ContractorController(ContractorFindingDemoContext contractorFindingDemoContext, IContractorService contractorService)
+        public ContractorController(ContractorFindingDemoContext contractorFindingDemoContext, IContractorService contractorService,IMapper mapper)
         {
             this.contractorFindingDemoContext = contractorFindingDemoContext;
             this.contractorService = contractorService;
+            _mapper=mapper;
         }
 
         //create
@@ -42,18 +50,29 @@ namespace API.Controllers
 
         //RETRIVE
         [HttpGet]
-
-        public JsonResult GetContractorDetails()
+        public async Task<IActionResult> GetContractorDetails()
         {
             try
             {
-                return new JsonResult(contractorService.GetContractorDetails().ToList());
+                var user = await contractorService.GetContractorDetails();
+                return Ok(user);
             }
             catch (Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
         }
+        //public JsonResult GetContractorDetails()
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(contractorService.GetContractorDetails().ToList());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
 
         //UPDATE
         [HttpPost]

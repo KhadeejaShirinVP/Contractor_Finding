@@ -45,11 +45,23 @@ namespace API.Controllers
 
         //RETRIEVE
         [HttpGet]
-        public JsonResult GetCustomerDetails()
+        //public JsonResult GetCustomerDetails()
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(customerService.GetCustomerDetails().ToList());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
+        public async Task<IActionResult> GetCustomerDetails()
         {
             try
             {
-                return new JsonResult(customerService.GetCustomerDetails().ToList());
+                var user = await customerService.GetCustomerDetails();
+                return Ok(user);
             }
             catch (Exception ex)
             {
@@ -97,18 +109,18 @@ namespace API.Controllers
         }
 
         //SerachingContractor
-        [HttpGet("Pincode")]
-        public JsonResult SearchBypincode(int pin)
-        {
-            try
-            {
-                return new JsonResult(customerService.SearchBypincode(pin).ToList());
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(ex.Message);
-            }
-        }
+        //[HttpGet("Pincode")]
+        //public JsonResult SearchBypincode(int pin)
+        //{
+        //    try
+        //    {
+        //        return new JsonResult(customerService.SearchBypincode(pin).ToList());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
 
         //Sending SMS
         [HttpPost("SendingToContractor")]

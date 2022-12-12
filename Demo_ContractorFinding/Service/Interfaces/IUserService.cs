@@ -10,7 +10,8 @@ namespace Service.Interfaces
 {
     public interface IUserService
     {
-        public List<UserDisplay> GetUserDetails();
+        //public List<UserDisplay> GetUserDetails();
+        Task<IEnumerable<Userview>> GetUserDetails();
         public bool checkExistUser(TbUser tbUser);
         public bool Register(Registration registration);
 

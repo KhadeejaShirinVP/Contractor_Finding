@@ -50,31 +50,37 @@ namespace Service
         }
 
         //RETRIEVE
-        public List<ContractorDisplay> GetContractorDetails()
+        //public List<ContractorDisplay> GetContractorDetails()
+        //{
+        //    List<ContractorDisplay> contractors = (from c in contractorFindingDemoContext.ContractorDetails
+        //                                           join g in contractorFindingDemoContext.TbGenders on
+        //                                           c.Gender equals g.GenderId
+        //                                           join user in contractorFindingDemoContext.TbUsers on c.ContractorId equals user.UserId
+        //                                           //from e in contractorFindingDemoContext.ContractorDetails
+        //                                           join h in contractorFindingDemoContext.ServiceProvidings on
+        //                                           c.Services equals h.ServiceId
+        //                                           select new ContractorDisplay
+        //                                           {
+        //                                               ContractorId = c.ContractorId,
+        //                                               CompanyName = c.CompanyName,
+        //                                               Gender = g.GenderType,
+        //                                               License = c.License,
+        //                                               Services = h.ServiceName,
+        //                                               Lattitude = c.Lattitude,
+        //                                               Longitude = c.Longitude,
+        //                                               Pincode = c.Pincode,
+        //                                               FirstName = user.FirstName,
+        //                                               LastName = user.LastName,
+        //                                               EmailId = user.EmailId,
+        //                                               PhoneNumber = c.PhoneNumber
+        //                                           }).ToList();
+        //    return contractors;
+        //}
+
+        public async Task<IEnumerable<ContractorView>> GetContractorDetails()
         {
-            List<ContractorDisplay> contractors = (from c in contractorFindingDemoContext.ContractorDetails
-                                                   join g in contractorFindingDemoContext.TbGenders on
-                                                   c.Gender equals g.GenderId
-                                                   join user in contractorFindingDemoContext.TbUsers on c.ContractorId equals user.UserId
-                                                   //from e in contractorFindingDemoContext.ContractorDetails
-                                                   join h in contractorFindingDemoContext.ServiceProvidings on
-                                                   c.Services equals h.ServiceId
-                                                   select new ContractorDisplay
-                                                   {
-                                                       ContractorId = c.ContractorId,
-                                                       CompanyName = c.CompanyName,
-                                                       Gender = g.GenderType,
-                                                       License = c.License,
-                                                       Services = h.ServiceName,
-                                                       Lattitude = c.Lattitude,
-                                                       Longitude = c.Longitude,
-                                                       Pincode = c.Pincode,
-                                                       FirstName = user.FirstName,
-                                                       LastName = user.LastName,
-                                                       EmailId = user.EmailId,
-                                                       PhoneNumber = c.PhoneNumber
-                                                   }).ToList();
-            return contractors;
+            var user = await contractorFindingDemoContext.ContractorViews.OrderBy(x => x.UserId).ToListAsync();
+            return (IEnumerable<ContractorView>)user;
         }
 
         //UPDATE
