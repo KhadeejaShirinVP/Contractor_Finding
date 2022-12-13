@@ -71,23 +71,43 @@ namespace API.Controllers
 
         //UPDATE
         [HttpPost]
-        public JsonResult UpdateCustomerDetails(TbCustomer tbCustomer)
+        [Route("CustomerUpdate")]
+        public async Task<IActionResult>Post(TbCustomer tbCustomer)
         {
             try
             {
-                var contractor = customerService.UpdateCustomerDetails(tbCustomer);
-                if (contractor == true)
+                await customerService.UpdateCustomerDetails(tbCustomer);
+                if (tbCustomer != null)
                 {
-                    return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
+                    return Ok(new CrudStatus() { Status = true, Message = "Successfully Updated" });
                 }
                 else
-                    return new JsonResult(new CrudStatus() { Status = false, Message = "Updation Failed" });
+                {
+                    return new JsonResult(new CrudStatus() { Status = false, Message = "Updation Failed" });                  
+                }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
         }
+        //public JsonResult UpdateCustomerDetails(TbCustomer tbCustomer)
+        //{
+        //    try
+        //    {
+        //        var contractor = customerService.UpdateCustomerDetails(tbCustomer);
+        //        if (contractor == true)
+        //        {
+        //            return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
+        //        }
+        //        else
+        //            return new JsonResult(new CrudStatus() { Status = false, Message = "Updation Failed" });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
 
         //DELETE
         [HttpDelete]

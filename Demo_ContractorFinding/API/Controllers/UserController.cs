@@ -133,6 +133,7 @@ namespace API.Controllers
             }
         }
 
+
         //for forgot password
         [HttpPost("forgotpassword")]
         public JsonResult ForgotPassword(Registration login)

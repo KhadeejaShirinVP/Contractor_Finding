@@ -136,7 +136,7 @@ namespace Contractor_FindingDemoTest.Services
 
 
             //Assert
-            Assert.Equal(expected,result);
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -152,7 +152,7 @@ namespace Contractor_FindingDemoTest.Services
 
 
             //Assert
-            Assert.Equal(expected,result);  
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -169,6 +169,7 @@ namespace Contractor_FindingDemoTest.Services
             //Assert
             Assert.Equal(expected, expected);
         }
+
         [Fact]
         public void Forget_passwrod_Test_wrong_confirmpass()
         {

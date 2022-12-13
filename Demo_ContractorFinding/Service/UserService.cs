@@ -105,7 +105,7 @@ namespace Service
         }
 
         //for login 
-        public bool  Login(TbUser login)
+        public bool Login(TbUser login)
         {
             string checkingpassword = encrypt.EncodePasswordToBase64(login.Password);
             var myUser = contractorFindingDemoContext.TbUsers.
@@ -121,6 +121,8 @@ namespace Service
             }
 
         }
+
+
 
         //public bool forgotpassword(Login login)
         //{

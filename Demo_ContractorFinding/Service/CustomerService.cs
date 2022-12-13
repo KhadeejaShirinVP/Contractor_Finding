@@ -78,35 +78,55 @@ namespace Service
         }
 
         //UPDATE
-        public bool UpdateCustomerDetails(TbCustomer tbCustomer)
+        public async Task<TbCustomer> UpdateCustomerDetails(TbCustomer tbCustomer)
         {
+            var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
+            if (customer != null)
             {
-                var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
-                if (customer != null)
+                customer.LandSqft = tbCustomer.LandSqft;
+                customer.BuildingType = tbCustomer.BuildingType;
+                customer.Lattitude = tbCustomer.Lattitude;
+                customer.Longitude = tbCustomer.Longitude;
+                customer.Pincode = tbCustomer.Pincode;
+                customer.CustomerId = tbCustomer.CustomerId;
+                if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
                 {
-                    customer.LandSqft = tbCustomer.LandSqft;
-                    customer.BuildingType = tbCustomer.BuildingType;
-                    customer.Lattitude = tbCustomer.Lattitude;
-                    customer.Longitude = tbCustomer.Longitude;
-                    customer.Pincode = tbCustomer.Pincode;
-                    customer.CustomerId = tbCustomer.CustomerId;
-                    if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
-                    {
-                        contractorFindingDemoContext.SaveChanges();
-                        return true;
-                    }
-                    return false;
+                    contractorFindingDemoContext.Entry(tbCustomer).State = EntityState.Modified;
+                    await contractorFindingDemoContext.SaveChangesAsync();
+                    return tbCustomer;
                 }
-                else
-                {
-                    return false;
-                }
-
+                return null;
             }
+            return null;
         }
 
-        //DELETE
-        public bool DeleteCustomer(TbCustomer tbCustomer)
+            //}
+            //public bool UpdateCustomerDetails(TbCustomer tbCustomer)
+            //{
+            //    var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
+            //    if (customer != null)
+            //    {
+            //        customer.LandSqft = tbCustomer.LandSqft;
+            //        customer.BuildingType = tbCustomer.BuildingType;
+            //        customer.Lattitude = tbCustomer.Lattitude;
+            //        customer.Longitude = tbCustomer.Longitude;
+            //        customer.Pincode = tbCustomer.Pincode;
+            //        customer.CustomerId = tbCustomer.CustomerId;
+            //        if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
+            //        {
+            //            contractorFindingDemoContext.SaveChanges();
+            //            return true;
+            //        }
+            //        return false;
+            //    }
+            //    else
+            //    {
+            //        return false;
+            //    }
+            //}
+
+            //DELETE
+            public bool DeleteCustomer(TbCustomer tbCustomer)
         {
             TbCustomer customer = contractorFindingDemoContext.TbCustomers.Where(c => c.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault()!;
             if (customer != null)

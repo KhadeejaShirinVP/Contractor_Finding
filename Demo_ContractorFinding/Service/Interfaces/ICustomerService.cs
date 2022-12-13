@@ -13,7 +13,8 @@ namespace Service.Interfaces
         bool CreateCustomer(TbCustomer tbCustomer);
         //List<CustomerDisplay> GetCustomerDetails();
         Task<IEnumerable<CustomerView>> GetCustomerDetails();
-        bool UpdateCustomerDetails(TbCustomer tbCustomer);
+        //bool UpdateCustomerDetails(TbCustomer tbCustomer);
+        Task<TbCustomer> UpdateCustomerDetails(TbCustomer tbCustomer);
 
         bool DeleteCustomer(TbCustomer tbCustomer);
         //public List<ContractorDisplay> SearchBypincode(int pincode);
