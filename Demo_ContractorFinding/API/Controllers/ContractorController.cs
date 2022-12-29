@@ -49,33 +49,43 @@ namespace API.Controllers
         }
 
         //RETRIVE
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<IActionResult> GetContractorDetails()
-        {
-            try
-            {
-                var user = await contractorService.GetContractorDetails();
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(ex.Message);
-            }
-        }
-        //public JsonResult GetContractorDetails()
+        //public async Task<IActionResult> GetContractorDetails()
         //{
         //    try
         //    {
-        //        return new JsonResult(contractorService.GetContractorDetails().ToList());
+        //        var user = await contractorService.GetContractorDetails();
+        //        return Ok(user);
         //    }
         //    catch (Exception ex)
         //    {
         //        return new JsonResult(ex.Message);
         //    }
         //}
+        public JsonResult GetContractorDetails()
+        {
+            try
+            {
+                return new JsonResult(contractorService.GetContractorDetails().ToList());
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
 
         //UPDATE
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contractorDetail"></param>
+        /// <returns></returns>
         [HttpPost]
+
 
         public JsonResult UpdateContractor(ContractorDetail contractorDetail)
         {
@@ -96,6 +106,11 @@ namespace API.Controllers
         }
 
         //DELETE
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="contractorDetail"></param>
+        /// <returns></returns>
         [HttpDelete]
         public JsonResult DeleteContractor(ContractorDetail contractorDetail)
         {

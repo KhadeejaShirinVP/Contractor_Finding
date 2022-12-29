@@ -28,7 +28,7 @@ namespace API.Controllers
 
         //for get user details
         // GET: api/<ContractorController>
-        [HttpGet]
+
         //public JsonResult Getuserdetails()
         //{
         //    try
@@ -41,6 +41,7 @@ namespace API.Controllers
         //    }
         //
 
+        [HttpGet]
         public async Task<IActionResult> GetUserDetails()
         {
             var user = await userService.GetUserDetails();
@@ -115,23 +116,41 @@ namespace API.Controllers
 
         //for user login 
         [HttpPost("login")]
-        public JsonResult LoginUser(TbUser login)
+        public IActionResult LoginUser(TbUser login)
         {
             try
             {
                 var details = userService.Login(login);
-                if (details != null)
+                if (details != false)
                 {
-                    return new JsonResult(new CrudStatus() { Status = true, Message = "Login Successfull!" });
+                    //HttpContext.Session.SetInt32(Sessionkey, details.Item2);
+                    //loginID(Sessionkey);
+                    return Ok(new CrudStatus() { Status = true, Message ="Success" });
                 }
-                return new JsonResult(new CrudStatus() { Status = false, Message = "LoginFailed" });
-
+                return Ok(new CrudStatus() { Status = false, Message = "LoginFailed" });
             }
             catch (Exception ex)
             {
-                return new JsonResult(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
+        //public JsonResult LoginUser(TbUser login)
+        //{
+        //    try
+        //    {
+        //        var details = userService.Login(login);
+        //        if (details != null)
+        //        {
+        //            return new JsonResult(new CrudStatus() { Status = true, Message = "Login Successfull!" });
+        //        }
+        //        return new JsonResult(new CrudStatus() { Status = false, Message = "LoginFailed" });
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new JsonResult(ex.Message);
+        //    }
+        //}
 
 
         //for forgot password

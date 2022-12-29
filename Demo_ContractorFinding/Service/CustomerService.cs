@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Domain.Models;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using Persistence;
 using Service.Interfaces;
@@ -53,80 +52,54 @@ namespace Service
         }
 
         //RETRIEVE
-        //public List<CustomerDisplay> GetCustomerDetails()
-        //{
-        //    List<CustomerDisplay> customers = (from c in contractorFindingDemoContext.TbCustomers
-        //                                       join b in contractorFindingDemoContext.TbBuildings on
-        //                                       c.BuildingType equals b.Id
-        //                                       select new CustomerDisplay
-        //                                       {
-        //                                           LandSqft = c.LandSqft,
-        //                                           RegistrationNo = c.RegistrationNo,
-        //                                           BuildingType = b.Building,
-        //                                           Lattitude = c.Lattitude,
-        //                                           Longitude = c.Longitude,
-        //                                           Pincode = c.Pincode,
-
-        //                                       }).ToList();
-        //    return customers;
-        //}
-
-        public async Task<IEnumerable<CustomerView>> GetCustomerDetails()
+        public List<CustomerDisplay> GetCustomerDetails()
         {
-            var user = await contractorFindingDemoContext.CustomerViews.OrderBy(x => x.UserId).ToListAsync();
-            return (IEnumerable<CustomerView>)user;
+            List<CustomerDisplay> customers = (from c in contractorFindingDemoContext.TbCustomers
+                                               join b in contractorFindingDemoContext.TbBuildings on
+                                               c.BuildingType equals b.Id
+                                               select new CustomerDisplay
+                                               {
+                                                   LandSqft = c.LandSqft,
+                                                   RegistrationNo = c.RegistrationNo,
+                                                   BuildingType = b.Building,
+                                                   Lattitude = c.Lattitude,
+                                                   Longitude = c.Longitude,
+                                                   Pincode = c.Pincode,
+
+                                               }).ToList();
+            return customers;
         }
 
         //UPDATE
-        public async Task<TbCustomer> UpdateCustomerDetails(TbCustomer tbCustomer)
+        public bool UpdateCustomerDetails(TbCustomer tbCustomer)
         {
-            var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
-            if (customer != null)
             {
-                customer.LandSqft = tbCustomer.LandSqft;
-                customer.BuildingType = tbCustomer.BuildingType;
-                customer.Lattitude = tbCustomer.Lattitude;
-                customer.Longitude = tbCustomer.Longitude;
-                customer.Pincode = tbCustomer.Pincode;
-                customer.CustomerId = tbCustomer.CustomerId;
-                if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
+                var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
+                if (customer != null)
                 {
-                    contractorFindingDemoContext.Entry(tbCustomer).State = EntityState.Modified;
-                    await contractorFindingDemoContext.SaveChangesAsync();
-                    return tbCustomer;
+                    customer.LandSqft = tbCustomer.LandSqft;
+                    customer.BuildingType = tbCustomer.BuildingType;
+                    customer.Lattitude = tbCustomer.Lattitude;
+                    customer.Longitude = tbCustomer.Longitude;
+                    customer.Pincode = tbCustomer.Pincode;
+                    customer.CustomerId = tbCustomer.CustomerId;
+                    if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
+                    {
+                        contractorFindingDemoContext.SaveChanges();
+                        return true;
+                    }
+                    return false;
                 }
-                return null;
+                else
+                {
+                    return false;
+                }
+
             }
-            return null;
         }
 
-            //}
-            //public bool UpdateCustomerDetails(TbCustomer tbCustomer)
-            //{
-            //    var customer = contractorFindingDemoContext.TbCustomers.Where(x => x.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault();
-            //    if (customer != null)
-            //    {
-            //        customer.LandSqft = tbCustomer.LandSqft;
-            //        customer.BuildingType = tbCustomer.BuildingType;
-            //        customer.Lattitude = tbCustomer.Lattitude;
-            //        customer.Longitude = tbCustomer.Longitude;
-            //        customer.Pincode = tbCustomer.Pincode;
-            //        customer.CustomerId = tbCustomer.CustomerId;
-            //        if (customer.LandSqft != null && customer.LandSqft != 0 && customer.RegistrationNo != null && customer.Pincode != null)
-            //        {
-            //            contractorFindingDemoContext.SaveChanges();
-            //            return true;
-            //        }
-            //        return false;
-            //    }
-            //    else
-            //    {
-            //        return false;
-            //    }
-            //}
-
-            //DELETE
-            public bool DeleteCustomer(TbCustomer tbCustomer)
+        //DELETE
+        public bool DeleteCustomer(TbCustomer tbCustomer)
         {
             TbCustomer customer = contractorFindingDemoContext.TbCustomers.Where(c => c.RegistrationNo == tbCustomer.RegistrationNo).FirstOrDefault()!;
             if (customer != null)
@@ -158,10 +131,10 @@ namespace Service
             }
         }
         //search
-        //public List<ContractorDisplay> SearchBypincode(int pincode)
-        //{
-        //    return  _contractorservice.GetContractorDetails().
-        //}
+        public List<ContractorDisplay> SearchBypincode(int pincode)
+        {
+            return  _contractorservice.GetContractorDetails().Where(x => x.Pincode == pincode).ToList();
+        }
 
     }
 

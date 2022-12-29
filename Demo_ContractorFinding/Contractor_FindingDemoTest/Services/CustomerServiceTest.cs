@@ -75,7 +75,7 @@ namespace Contractor_FindingDemoTest.Services
 
             //Assret
 
-            Assert.NotNull(result);
+            Assert.Equal(expected, result);
         }
 
         [Fact]
@@ -87,9 +87,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = customerService.UpdateCustomerDetails(customer);
+            var expect = false;
 
             //Assert
-            Assert.Null(result.Result);
+            Assert.Equal(result, expect);
 
         }
         [Fact]
@@ -101,9 +102,10 @@ namespace Contractor_FindingDemoTest.Services
 
             //Act
             var result = customerService.UpdateCustomerDetails(customer);
+            var expected = false;
 
             //Assert
-            Assert.Null(result.Result);
+            Assert.Equal(result, expected);
 
         }
 

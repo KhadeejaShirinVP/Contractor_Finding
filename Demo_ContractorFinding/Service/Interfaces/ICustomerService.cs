@@ -11,13 +11,11 @@ namespace Service.Interfaces
     public interface ICustomerService
     {
         bool CreateCustomer(TbCustomer tbCustomer);
-        //List<CustomerDisplay> GetCustomerDetails();
-        Task<IEnumerable<CustomerView>> GetCustomerDetails();
-        //bool UpdateCustomerDetails(TbCustomer tbCustomer);
-        Task<TbCustomer> UpdateCustomerDetails(TbCustomer tbCustomer);
+        List<CustomerDisplay> GetCustomerDetails();
+        bool UpdateCustomerDetails(TbCustomer tbCustomer);
 
         bool DeleteCustomer(TbCustomer tbCustomer);
-        //public List<ContractorDisplay> SearchBypincode(int pincode);
+        public List<ContractorDisplay> SearchBypincode(int pincode);
         string SendMessage(long phonenumber, string reggistration, int id);
 
     }

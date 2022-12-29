@@ -45,23 +45,11 @@ namespace API.Controllers
 
         //RETRIEVE
         [HttpGet]
-        //public JsonResult GetCustomerDetails()
-        //{
-        //    try
-        //    {
-        //        return new JsonResult(customerService.GetCustomerDetails().ToList());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new JsonResult(ex.Message);
-        //    }
-        //}
-        public async Task<IActionResult> GetCustomerDetails()
+        public JsonResult GetCustomerDetails()
         {
             try
             {
-                var user = await customerService.GetCustomerDetails();
-                return Ok(user);
+                return new JsonResult(customerService.GetCustomerDetails().ToList());
             }
             catch (Exception ex)
             {
@@ -71,43 +59,23 @@ namespace API.Controllers
 
         //UPDATE
         [HttpPost]
-        [Route("CustomerUpdate")]
-        public async Task<IActionResult>Post(TbCustomer tbCustomer)
+        public JsonResult UpdateCustomerDetails(TbCustomer tbCustomer)
         {
             try
             {
-                await customerService.UpdateCustomerDetails(tbCustomer);
-                if (tbCustomer != null)
+                var contractor = customerService.UpdateCustomerDetails(tbCustomer);
+                if (contractor == true)
                 {
-                    return Ok(new CrudStatus() { Status = true, Message = "Successfully Updated" });
+                    return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
                 }
                 else
-                {
-                    return new JsonResult(new CrudStatus() { Status = false, Message = "Updation Failed" });                  
-                }
+                    return new JsonResult(new CrudStatus() { Status = false, Message = "Updation Failed" });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new JsonResult(ex.Message);
             }
         }
-        //public JsonResult UpdateCustomerDetails(TbCustomer tbCustomer)
-        //{
-        //    try
-        //    {
-        //        var contractor = customerService.UpdateCustomerDetails(tbCustomer);
-        //        if (contractor == true)
-        //        {
-        //            return new JsonResult(new CrudStatus() { Status = true, Message = "Successfully Updated" });
-        //        }
-        //        else
-        //            return new JsonResult(new CrudStatus() { Status = false, Message = "Updation Failed" });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new JsonResult(ex.Message);
-        //    }
-        //}
 
         //DELETE
         [HttpDelete]
@@ -129,18 +97,18 @@ namespace API.Controllers
         }
 
         //SerachingContractor
-        //[HttpGet("Pincode")]
-        //public JsonResult SearchBypincode(int pin)
-        //{
-        //    try
-        //    {
-        //        return new JsonResult(customerService.SearchBypincode(pin).ToList());
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return new JsonResult(ex.Message);
-        //    }
-        //}
+        [HttpGet("Pincode")]
+        public JsonResult SearchBypincode(int pin)
+        {
+            try
+            {
+                return new JsonResult(customerService.SearchBypincode(pin).ToList());
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(ex.Message);
+            }
+        }
 
         //Sending SMS
         [HttpPost("SendingToContractor")]
