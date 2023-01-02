@@ -113,24 +113,25 @@ namespace Service
                 && u.Password == checkingpassword);
             if (myUser != null)
             {
-               
+
                 return true;
             }
             return false;
         }
 
-            //    string checkingpassword = encrypt.EncodePasswordToBase64(login.Password);
-            //    var myUser = contractorFindingDemoContext.TbUsers.
-            //        FirstOrDefault(u => u.EmailId == login.EmailId
-            //        && u.Password == checkingpassword);
-            //    if (myUser == null)
-            //    {
-            //        return false;
-            //    }
-            //    else
-            //    {
-            //        return true;
-            //    }
+
+        //    string checkingpassword = encrypt.EncodePasswordToBase64(login.Password);
+        //    var myUser = contractorFindingDemoContext.TbUsers.
+        //        FirstOrDefault(u => u.EmailId == login.EmailId
+        //        && u.Password == checkingpassword);
+        //    if (myUser == null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
         //}
 
 
